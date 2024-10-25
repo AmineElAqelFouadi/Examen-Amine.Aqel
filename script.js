@@ -1,6 +1,6 @@
 const SWAPI_BASE_URL = 'https://pokeapi.co/api/v2/pokemon/?limit=151'
 
-const team = [];
+
 
 window.onload = async function () {
     const pokemons = await getAllPokemons();
@@ -10,21 +10,18 @@ window.onload = async function () {
         const listItem = document.createElement('li');
         listItem.innerText = pokemon.name;
 
-        const addButton = document.createElement('button');
-        addButton.innerText = 'Agregar';
-        addButton.addEventListener('click', async function() {
-            if(team.length < 6) {
-                const pokemonDetails = await getPokemonDetails(pokemon.url);
-                añadirPokemon(pokemonDetails);
-            }
-            else
-
         listItem.addEventListener('click', async function() {
             const pokemonDetails = await getPokemonDetails(pokemon.url);
             displayPokemonDetails(pokemonDetails);
         });
         pokemonList.appendChild(listItem);
+
     }
+    const searchInput = document.getElementById('search-form');
+    searchForm.addEventListener('submit', async function(event) {
+        const searchInput = document.getElementById('search-input');
+        await searchPokemonByName(searchInput);
+    });
 
 };
 
@@ -51,5 +48,8 @@ function displayPokemonDetails(pokemonDetails) {
     `;
 }
 
-
+async function searchPokemonByName(searchInput) {
+    try{
+        const response = await fetch(``);
+    }
 
