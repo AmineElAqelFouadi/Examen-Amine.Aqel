@@ -1,5 +1,7 @@
 const SWAPI_BASE_URL = 'https://pokeapi.co/api/v2/pokemon/?limit=151'
 
+const team = [];
+
 window.onload = async function () {
     const pokemons = await getAllPokemons();
     const pokemonList = document.getElementById('pokemon-list');
@@ -7,12 +9,23 @@ window.onload = async function () {
     for (const pokemon of pokemons) {
         const listItem = document.createElement('li');
         listItem.innerText = pokemon.name;
+
+        const addButton = document.createElement('button');
+        addButton.innerText = 'Agregar';
+        addButton.addEventListener('click', async function() {
+            if(team.length < 6) {
+                const pokemonDetails = await getPokemonDetails(pokemon.url);
+                añadirPokemon(pokemonDetails);
+            }
+            else
+
         listItem.addEventListener('click', async function() {
             const pokemonDetails = await getPokemonDetails(pokemon.url);
             displayPokemonDetails(pokemonDetails);
         });
         pokemonList.appendChild(listItem);
     }
+
 };
 
 async function getAllPokemons() {
@@ -37,3 +50,6 @@ function displayPokemonDetails(pokemonDetails) {
         <p>Tipos: ${pokemonDetails.types.map(typeInfo => typeInfo.type.name).join(', ')}</p>
     `;
 }
+
+
+
