@@ -1,5 +1,4 @@
-const SWAPI_BASE_URL = 'https://pokeapi.co/api/v2/pokemon/?limit=151'
-
+const SWAPI_BASE_URL = 'https://pokeapi.co/api/v2/pokedex/2/'
 
 
 window.onload = async function () {
@@ -19,6 +18,7 @@ window.onload = async function () {
     }
     const searchForm = document.getElementById('searchForm');
     searchForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
         const searchInput = document.getElementById('searchInput').value.toLowerCase().trim();;
         await searchPokemonByName(searchInput);
     });
@@ -49,15 +49,14 @@ function displayPokemonDetails(pokemonDetails) {
 }
 
 async function searchPokemonByName(name) {
+    const searchInput = document.getElementById('searchInput');
     try{
         const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
         if (!response.ok) {
             throw new Error('Pokemon no encontrado');
         }
-        else {
             const pokemonDetails = await response.json();
             displayPokemonDetails(pokemonDetails);
-        }
     } catch (error) {
         alert("ERROR");
     }
