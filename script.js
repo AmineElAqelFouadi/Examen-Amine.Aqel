@@ -7,10 +7,10 @@ window.onload = async function () {
     pokemonList.innerHTML = '';
     for (const pokemon of pokemons) {
         const listItem = document.createElement('li');
+        const pokemon = pokemon.pokemon_species;
         listItem.innerText = pokemon.name;
-
         listItem.addEventListener('click', async function() {
-            const pokemonDetails = await getPokemonDetails(pokemon.url);
+            const pokemonDetails = await getPokemonDetails(pokemon.pokemon_species.url);
             displayPokemonDetails(pokemonDetails);
         });
         pokemonList.appendChild(listItem);
@@ -28,7 +28,7 @@ window.onload = async function () {
 async function getAllPokemons() {
     const response = await fetch(`${SWAPI_BASE_URL}`);
     const jsonResponse = await response.json();
-    const pokemonsArray = jsonResponse.results;
+    const pokemonsArray = jsonResponse.pokemon_entries.pokemon_species;
     return pokemonsArray;
 }
 
