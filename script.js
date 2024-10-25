@@ -1,36 +1,34 @@
-const SWAPI_BASE_URL = 'https://pokeapi.co/api/v2/pokedex/2/';
+const SWAPI_BASE_URL = 'https://pokeapi.co/api/v2/pokemon/?limit=151'
+
+
 
 window.onload = async function () {
     const pokemons = await getAllPokemons();
     const pokemonList = document.getElementById('pokemon-list');
     pokemonList.innerHTML = '';
-
-    for (const entry of pokemons) {
-        const pokemon = entry.pokemon_species; 
+    for (const pokemon of pokemons) {
         const listItem = document.createElement('li');
         listItem.innerText = pokemon.name;
 
-        
         listItem.addEventListener('click', async function() {
             const pokemonDetails = await getPokemonDetails(pokemon.url);
             displayPokemonDetails(pokemonDetails);
         });
-
         pokemonList.appendChild(listItem);
-    }
 
+    }
     const searchForm = document.getElementById('searchForm');
     searchForm.addEventListener('submit', async function(event) {
-        event.preventDefault(); // Evitar recarga de la página
-        const searchInput = document.getElementById('searchInput').value.toLowerCase().trim();
+        const searchInput = document.getElementById('searchInput').value.toLowerCase().trim();;
         await searchPokemonByName(searchInput);
     });
+
 };
 
 async function getAllPokemons() {
-    const response = await fetch(SWAPI_BASE_URL);
+    const response = await fetch(`${SWAPI_BASE_URL}`);
     const jsonResponse = await response.json();
-    const pokemonsArray = jsonResponse.pokemon_entries;
+    const pokemonsArray = jsonResponse.results;
     return pokemonsArray;
 }
 
@@ -50,16 +48,17 @@ function displayPokemonDetails(pokemonDetails) {
     `;
 }
 
-
 async function searchPokemonByName(name) {
-    try {
+    try{
         const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
         if (!response.ok) {
-            throw new Error('Pokémon no encontrado');
+            throw new Error('Pokemon no encontrado');
         }
-        const pokemonDetails = await response.json();
-        displayPokemonDetails(pokemonDetails);
+        else {
+            const pokemonDetails = await response.json();
+            displayPokemonDetails(pokemonDetails);
+        }
     } catch (error) {
-        alert("ERROR: " + error.message); 
+        alert("ERROR");
     }
 }
