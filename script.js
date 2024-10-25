@@ -1,34 +1,36 @@
-const SWAPI_BASE_URL = 'https://pokeapi.co/api/v2/pokedex/2/'
-
+const SWAPI_BASE_URL = 'https://pokeapi.co/api/v2/pokedex/2/';
 
 window.onload = async function () {
     const pokemons = await getAllPokemons();
     const pokemonList = document.getElementById('pokemon-list');
     pokemonList.innerHTML = '';
-    for (const pokemon of pokemons) {
+
+    for (const entry of pokemons) {
+        const pokemon = entry.pokemon_species; 
         const listItem = document.createElement('li');
-        const pokemon = pokemon.pokemon_species;
         listItem.innerText = pokemon.name;
+
+        
         listItem.addEventListener('click', async function() {
-            const pokemonDetails = await getPokemonDetails(pokemon.pokemon_species.url);
+            const pokemonDetails = await getPokemonDetails(pokemon.url);
             displayPokemonDetails(pokemonDetails);
         });
-        pokemonList.appendChild(listItem);
 
+        pokemonList.appendChild(listItem);
     }
+
     const searchForm = document.getElementById('searchForm');
     searchForm.addEventListener('submit', async function(event) {
-        event.preventDefault();
-        const searchInput = document.getElementById('searchInput').value.toLowerCase().trim();;
+        event.preventDefault(); // Evitar recarga de la página
+        const searchInput = document.getElementById('searchInput').value.toLowerCase().trim();
         await searchPokemonByName(searchInput);
     });
-
 };
 
 async function getAllPokemons() {
-    const response = await fetch(`${SWAPI_BASE_URL}`);
+    const response = await fetch(SWAPI_BASE_URL);
     const jsonResponse = await response.json();
-    const pokemonsArray = jsonResponse.pokemon_entries.pokemon_species;
+    const pokemonsArray = jsonResponse.pokemon_entries;
     return pokemonsArray;
 }
 
@@ -48,17 +50,16 @@ function displayPokemonDetails(pokemonDetails) {
     `;
 }
 
+
 async function searchPokemonByName(name) {
-    const searchInput = document.getElementById('searchInput');
-    try{
+    try {
         const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
         if (!response.ok) {
-            throw new Error('Pokemon no encontrado');
+            throw new Error('Pokémon no encontrado');
         }
-            const pokemonDetails = await response.json();
-            displayPokemonDetails(pokemonDetails);
+        const pokemonDetails = await response.json();
+        displayPokemonDetails(pokemonDetails);
     } catch (error) {
-        alert("ERROR");
+        alert("ERROR: " + error.message); 
     }
 }
-
