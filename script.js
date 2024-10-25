@@ -17,9 +17,9 @@ window.onload = async function () {
         pokemonList.appendChild(listItem);
 
     }
-    const searchInput = document.getElementById('search-form');
+    const searchForm = document.getElementById('searchForm');
     searchForm.addEventListener('submit', async function(event) {
-        const searchInput = document.getElementById('search-input');
+        const searchInput = document.getElementById('searchInput').value.toLowerCase().trim();;
         await searchPokemonByName(searchInput);
     });
 
@@ -48,8 +48,18 @@ function displayPokemonDetails(pokemonDetails) {
     `;
 }
 
-async function searchPokemonByName(searchInput) {
+async function searchPokemonByName(name) {
     try{
-        const response = await fetch(``);
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+        if (!response.ok) {
+            throw new Error('Pokemon no encontrado');
+        }
+        else {
+            const pokemonDetails = await response.json();
+            displayPokemonDetails(pokemonDetails);
+        }
+    } catch (error) {
+        alert("ERROR");
     }
+}
 
