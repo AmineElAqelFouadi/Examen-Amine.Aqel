@@ -19,6 +19,7 @@ window.onload = async function () {
     }
     const searchForm = document.getElementById('searchForm');
     searchForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
         const searchInput = document.getElementById('searchInput').value.toLowerCase().trim();;
         await searchPokemonByName(searchInput);
     });
