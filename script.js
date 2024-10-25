@@ -29,12 +29,11 @@ async function getPokemonDetails(url) {
 }
 
 function displayPokemonDetails(pokemonDetails) {
-    const pokemonContainer = document.getElementById('pokemon-container');
+    const pokemonContainer = document.getElementById('pokemonContainer');
     pokemonContainer.innerHTML = `
-    <h2>${pokemonDetails.name}</h2>
-    <p>ID: ${pokemonDetails.id}</p>
-    src="${pokemon.sprites.other['official-artwork'].front_default}" alt="${pokemon.name}">
-    <p>Tipos: ${pokemon.types.map(typeInfo => typeInfo.type.name).join(', ')}</p>
-    `
-    ;
+        <h2>${pokemonDetails.name}</h2>
+        <p>ID: ${pokemonDetails.id}</p>
+        <img src="${pokemonDetails.sprites.other['official-artwork'].front_default}" alt="${pokemonDetails.name}">
+        <p>Tipos: ${pokemonDetails.types.map(typeInfo => typeInfo.type.name).join(', ')}</p>
+    `;
 }
